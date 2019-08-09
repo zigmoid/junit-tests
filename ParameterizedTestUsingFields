@@ -1,0 +1,36 @@
+import org.junit.Test;
+import org.junit.runners.Parameterized;
+import org.junit.runner.RunWith;
+
+@RunWith(Parameterized.class)
+public class ParameterizedTestUsingFields {
+    // fields used together with @Parameter must be public
+    @Parameterized.Parameter(0)
+    public String nameParam;
+    @Parameterized.Parameter(1)
+    public int ageParam;
+    
+    @Parameterized.Parameter(2)
+    public boolean isEligibleParam;
+
+
+    // creates the test data
+    @Parameterized.Parameters(name = "{index}: Test with nameParam={0}, ageParam ={1}, output isEligible value is :{2} ")
+    public static Collection<Object[]> data() {
+            Object[][] data = new Object[][]{{"Nitin", 25, true}, {"Mittal", 34, false}};
+            return Arrays.asList(data);
+    }
+
+    @Test
+    public void TestMultipleTimes() {
+        String input = inputXml(nameParam, ageParam);
+        assertEquals(isEligibleParam, methodToBeTested(inputXml));
+    }
+       
+    private String inputXml(String name, int age) {
+        return "<Person><Name>" + name + "</Name><Age>"+ age + "</Age></Person>";
+    }
+}
+
+// "{0}: Test with nameParam={Nitin}, ageParam ={25}, output isEligible value is :{true}"
+// "{1}: Test with nameParam={Mittal}, ageParam ={34}, output isEligible value is :{false}"
